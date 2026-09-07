@@ -41,6 +41,8 @@ Invoke it in Codex with `$critical-thinking-peer`, or let the agent select it wh
 
 The optional [global defaults](rules/global-defaults.md) are an editable instruction fragment. Merge the parts you want into your existing global agent instructions; do not replace the whole file. Avoid overlapping methodology packages that impose contradictory approval, testing, or scope rules. Preserve specialist skills.
 
+The optional [CodeGraph bootstrap profile](rules/codegraph-bootstrap.md) adds automatic initial indexing for new code projects and CodeGraph-first code exploration when the tool is installed.
+
 Copies do not update automatically. Review repository changes before copying an updated skill. Restart your client if changes are not discovered; use a fresh task when old instructions were already loaded.
 
 ## Validation and evidence

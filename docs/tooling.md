@@ -2,6 +2,8 @@
 
 No tool on this page is a dependency of these skills. Choose a tool for the question and verify the source behind its answer.
 
+To make CodeGraph part of new-project bootstrap, adopt the optional [CodeGraph bootstrap profile](../rules/codegraph-bootstrap.md). It authorizes initial indexing for new code projects and directs Codex to use the correct project-local index. It does not retroactively index existing projects or install CodeGraph.
+
 | Need | Starting point | Optional addition |
 |---|---|---|
 | Exact text, identifiers, paths | ripgrep and direct file reads | tgrep if repeated search latency warrants indexing |

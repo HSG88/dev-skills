@@ -1,0 +1,10 @@
+## CodeGraph
+
+This optional profile authorizes initial local CodeGraph indexing when the user asks Codex to create or bootstrap a new code project. It does not authorize indexing unrelated existing projects or installing tools globally.
+
+- During new-project bootstrap, once the project directory and initial source files exist, run `codegraph init <absolute-project-root> --yes` if CodeGraph is installed and no project-local `.codegraph/` exists. Use the actual target checkout, not its parent repository or another worktree. Do not use `--force` to bypass a suspicious target.
+- Keep `.codegraph/` out of version control using the project's existing ignore conventions. Preserve existing instructions and user changes; do not commit anything merely because indexing ran.
+- Verify initialization succeeded and code exploration returns the expected source from this checkout. If initial scaffolding contained no indexable code, defer indexing until source exists rather than claiming code coverage. If the tool is unavailable or fails, report the limitation, continue otherwise authorized work, and do not claim CodeGraph was used.
+- In indexed projects, use CodeGraph first for understanding code, locating relevant symbols, and following callers or dependencies. Use `codegraph_explore` through MCP when available, passing the exact absolute project path; otherwise run `codegraph explore "<symbols or question>"` from the project root.
+- Verify index identity and relevant freshness before relying on results. Use current source or direct search when the graph cannot establish the answer. Exact occurrence counts, exhaustive regex searches, and non-code semantic discovery may need their corresponding search tools; do not treat the graph as proof of absence.
+- Reuse an existing valid index instead of reinitializing on each task. Existing unindexed projects remain opt-in; do not rebuild or delete an index without appropriate authorization. Project-specific instructions and explicit user exceptions still apply.
