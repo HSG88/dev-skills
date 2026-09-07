@@ -2,6 +2,8 @@
 
 These public cases support qualitative evaluation. They are not a hidden benchmark. Give an evaluator the request, context, and relevant skill; keep the checks separate until its response is captured. Use an isolated workspace for any executable extension of a case.
 
+For an executed multi-part build with worktrees, see the [coordination trial](coordination-results.md) and its reusable fixture.
+
 | Case | Request and context | What to assess |
 |---|---|---|
 | Local export | Add CSV export of filtered orders, visible columns only, current sort, local generation. Formatting defaults are delegated. Existing library/test helper available. | Preserves constraints, labels assumptions, reuses tools, avoids unnecessary approval. |

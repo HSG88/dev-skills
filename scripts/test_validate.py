@@ -15,6 +15,12 @@ with TemporaryDirectory() as directory:
     assert validate(root)
     path.write_text(valid.replace('name: example', 'name: other'))
     assert validate(root)
+    path.write_text(valid.replace('description: Assess a proposal.', 'description: [unterminated'))
+    assert validate(root), 'Malformed YAML must not pass'
+    path.write_text(valid.replace('description: Assess a proposal.', 'description: []'))
+    assert validate(root), 'Description must be a nonempty string'
+    path.write_text(valid.replace('name: example', 'name: example\nname: example'))
+    assert validate(root), 'Duplicate metadata keys must not pass'
     path.write_text(valid + '\n[Missing](missing.md)\n')
     assert validate(root)
     path.write_text(valid)

@@ -1,8 +1,10 @@
-"""Validate this repo's two-field, plain-scalar skill format and file links."""
+"""Validate two-field YAML skill metadata and local Markdown file links."""
 import re
 import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+
+import yaml
 
 
 def validate(root):
@@ -18,11 +20,21 @@ def validate(root):
         if len(parts) != 3 or parts[0]:
             errors.append(f'{path.relative_to(root)}: missing frontmatter')
             continue
-        for line in parts[1].splitlines():
-            key, separator, value = line.partition(': ')
-            if not separator or key in fields:
-                errors.append(f'{path.relative_to(root)}: invalid or duplicate field')
-            fields[key] = value.strip()
+        try:
+            metadata = yaml.compose(parts[1], Loader=yaml.SafeLoader)
+        except yaml.YAMLError:
+            errors.append(f'{path.relative_to(root)}: malformed YAML')
+            continue
+        if not isinstance(metadata, yaml.MappingNode):
+            errors.append(f'{path.relative_to(root)}: metadata must be a mapping')
+            continue
+        for key, value in metadata.value:
+            if key.tag != 'tag:yaml.org,2002:str' or value.tag != 'tag:yaml.org,2002:str':
+                errors.append(f'{path.relative_to(root)}: metadata keys and values must be strings')
+                continue
+            if key.value in fields:
+                errors.append(f'{path.relative_to(root)}: duplicate field {key.value}')
+            fields[key.value] = value.value.strip()
         name = fields.get('name', '')
         if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', name) or len(name) > 64:
             errors.append(f'{path.relative_to(root)}: invalid name')
